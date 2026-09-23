@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 part '../shared/mocks/homepage.mock.dart';
+part 'homepage_controller.dart';
+part 'homepage_widgets.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -21,13 +23,16 @@ class Homepage extends StatelessWidget {
                 children: [
                   const CircleAvatar(
                     radius: 50,
-                    backgroundColor: AppColors.neutral200,
+                    backgroundColor: Color(0xFFE5E7EB),
                   ),
                   const SizedBox(height: 8),
-                  const Text('Olá, Usuário', style: AppTypography.greeting),
-                  const Text(
+                  Text(
+                    'Olá, Usuário',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  Text(
                     'Painel de controle geral',
-                    style: AppTypography.input,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 12),
                   _SummaryGrid(controller: controller),
@@ -39,7 +44,6 @@ class Homepage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: _HomeNavigation(controller: controller),
     );
   }
 }

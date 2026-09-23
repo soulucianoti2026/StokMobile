@@ -1,4 +1,4 @@
-part of '../../homepage/homepage.dart';
+part of '../../homePage/homepage.dart';
 
 // Immutable local fixtures. Values are cents, quantities are units.
 class _Product {
