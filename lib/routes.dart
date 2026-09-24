@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:stokmobile/productManager/product_manage_page.dart';
+import 'package:stokmobile/productpage/product/page/productPage_.dart';
 
-import 'homePage/homepage.dart';
-import 'loginPage/loginpage.dart';
-
-abstract final class AppRoutes {
-  static const login = '/';
-  static const home = '/home';
-
+class AppRoutes {
   static final Map<String, WidgetBuilder> routes = {
-    login: (_) => const LoginPage(),
-    home: (_) => const Homepage(),
+    ProductPage.route: (context) => ProductPage(),
+    ProductManagePage.route: (context) => ProductManagePage(),
   };
 }
