@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:stokmobile/loginpage/login_controller.dart';
 import 'routes.dart';
 
 void main() {
@@ -12,22 +10,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) {
-            return LoginController();
-          },
-        ),
-      ],
-      builder: (context, child) {
-        return MaterialApp(
-          title: 'StokMobile',
-          theme: ThemeData(primarySwatch: Colors.teal),
-          initialRoute: AppRoutes.login,
-          routes: AppRoutes.routes,
-        );
-      },
+    return MaterialApp(
+      title: 'StokMobile',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      initialRoute: AppRoutes.login,
+      routes: AppRoutes.routes,
     );
   }
 }

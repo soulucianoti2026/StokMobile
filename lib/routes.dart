@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stokmobile/homepage/home_page.dart';
-import 'package:stokmobile/loginpage/login_page.dart';
+
+import 'homePage/homepage.dart';
+import 'loginPage/loginpage.dart';
 
 abstract final class AppRoutes {
   static const login = '/';
@@ -8,6 +9,6 @@ abstract final class AppRoutes {
 
   static final Map<String, WidgetBuilder> routes = {
     login: (_) => const LoginPage(),
-    home: (_) => const HomePage(),
+    home: (_) => const Homepage(),
   };
 }
