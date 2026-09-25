@@ -7,6 +7,7 @@ import 'package:stokmobile/lostpasswordPage/lostpasword_page.dart';
 
 abstract final class AppRoutes {
   static const login = '/';
+  static const productMovPage = '/productMovPage';
   static const home = '/home';
   static const lostPassword = '/lost-password';
 
