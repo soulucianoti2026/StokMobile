@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stokmobile/productMovPage/product_mov_page.dart';
+import 'package:stokmobile/productPage/product_page.dart';
+import 'package:stokmobile/shared/widgets/app_elavated_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,6 +20,23 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: const Text('Home')));
+    return Scaffold(
+      body: Column(
+        children: [
+          AppElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, ProductMovPage.route);
+            },
+            label: 'Movimentacoes',
+          ),
+          AppElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, ProductPage.route);
+            },
+            label: 'Produtos',
+          ),
+        ],
+      ),
+    );
   }
 }

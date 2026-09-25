@@ -31,6 +31,18 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Container(
+        height: 56,
+        width: 56,
+        decoration: BoxDecoration(
+          color: const Color(0xFF0D9488),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.add_circle_outline_sharp, color: Colors.white),
+        ),
+      ),
       appBar: AppBar(title: const Text('Produtos'), shadowColor: Colors.white),
 
       body: Container(
@@ -68,7 +80,7 @@ class _ProductPageState extends State<ProductPage> {
                 ),
 
               // 4. Botão de Adicionar Novo Produto (O que ficava no canto inferior direito)
-              const ButtonNewProduct(),
+              // const ButtonNewProduct(),
             ],
           ),
         ),

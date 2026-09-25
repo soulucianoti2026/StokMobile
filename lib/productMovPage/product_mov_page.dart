@@ -4,6 +4,8 @@ import 'package:stokmobile/shared/wigdets/app_elevated_button.dart';
 class ProductMovPage extends StatelessWidget {
   const ProductMovPage({super.key});
 
+  static String route = '/movimentacoes';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 // import 'package:flutter/material.dart';
 // import 'package:flutter_test/flutter_test.dart';
 
@@ -46,4 +44,3 @@
 //     expect(tester.takeException(), isNull);
 //   });
 // }
->>>>>>> 029aeb438eb8cff2a64aefd8e91d25ccdad09a44
