@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:stokmobile/productManager/page/product_manage_page.dart';
+import 'package:stokmobile/productPage/product_page.dart';
 import 'package:stokmobile/homepage/home_page.dart';
 import 'package:stokmobile/loginpage/login_page.dart';
 import 'package:stokmobile/lostpasswordPage/lostpasword_page.dart';
@@ -12,5 +14,7 @@ abstract final class AppRoutes {
     login: (_) => const LoginPage(),
     home: (_) => const HomePage(),
     lostPassword: (_) => const LostpaswordPage(),
+    ProductPage.route: (context) => ProductPage(),
+    ProductManagePage.route: (context) => ProductManagePage(),
   };
 }

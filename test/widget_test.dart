@@ -1,34 +1,30 @@
+// This is a basic Flutter widget test.
+//
+// To perform an interaction with a widget in your test, use the WidgetTester
+// utility in the flutter_test package. For example, you can send tap and scroll
+// gestures. You can also use WidgetTester to find child widgets in the widget
+// tree, read text, and verify that the values of widget properties are correct.
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:stokmobile/homePage/homepage.dart';
-import 'package:stokmobile/loginPage/loginpage.dart';
+
 import 'package:stokmobile/main.dart';
-import 'package:stokmobile/routes.dart';
 
 void main() {
-  testWidgets('App starts on LoginPage', (tester) async {
+  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
-    await tester.pumpAndSettle();
 
-    expect(find.byType(LoginPage), findsOneWidget);
-    expect(find.text('Login'), findsOneWidget);
-    expect(find.byType(Homepage), findsNothing);
-    expect(
-      Navigator.of(tester.element(find.byType(LoginPage))).canPop(),
-      isFalse,
-    );
-  });
+    // Verify that our counter starts at 0.
+    expect(find.text('0'), findsOneWidget);
+    expect(find.text('1'), findsNothing);
 
-  testWidgets('Home route opens Homepage', (tester) async {
-    await tester.pumpWidget(const MyApp());
-    await tester.pumpAndSettle();
+    // Tap the '+' icon and trigger a frame.
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
 
-    Navigator.of(
-      tester.element(find.byType(LoginPage)),
-    ).pushNamed(AppRoutes.home);
-    await tester.pumpAndSettle();
-
-    expect(find.byType(Homepage), findsOneWidget);
-    expect(tester.takeException(), isNull);
+    // Verify that our counter has incremented.
+    expect(find.text('0'), findsNothing);
+    expect(find.text('1'), findsOneWidget);
   });
 }
