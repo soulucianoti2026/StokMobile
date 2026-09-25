@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stokmobile/productManager/product_manage_page.dart';
-import 'package:stokmobile/productpage/product/controllers/productControllers.dart';
 
-import 'package:stokmobile/productpage/product/page/productPage_.dart';
+import 'package:stokmobile/productPage/controllers/product_controllers.dart';
+import 'package:stokmobile/productPage/product_page.dart';
+
 import 'package:stokmobile/routes.dart';
 
 void main() {

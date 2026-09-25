@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stokmobile/productManager/product_manage_page.dart';
-import 'package:stokmobile/productpage/product/page/productPage_.dart';
+import 'package:stokmobile/productManager/page/product_manage_page.dart';
+import 'package:stokmobile/productPage/product_page.dart';
 
 class AppRoutes {
   static final Map<String, WidgetBuilder> routes = {
