@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stokmobile/homepage/home_page.dart';
 import 'package:stokmobile/loginpage/login_controller.dart';
+import 'package:stokmobile/routes.dart';
 import 'package:stokmobile/shared/app_colors.dart';
 import 'package:stokmobile/shared/exceptions/auth_exception.dart';
 import 'package:stokmobile/shared/widgets/app_check_box.dart';
@@ -80,7 +81,7 @@ class LoginPage extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              // Aqui entraria a navegação para tela de recovery
+                              Navigator.pushNamed(context, AppRoutes.lostPassword);
                             },
                             child: Text(
                               'Esqueceu?',
