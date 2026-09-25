@@ -1,6 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stokmobile/lostpassword/controllers/lostpassword_controller.dart';
+import 'package:stokmobile/lostpasswordPage/controllers/lostpassword_controller.dart';
 
 const _recoveryTeal = Color(0xFF2E9489);
 
