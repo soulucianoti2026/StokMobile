@@ -5,6 +5,8 @@ import 'package:stokmobile/productPage/controllers/product_controllers.dart';
 import 'package:stokmobile/productPage/product_page.dart';
 
 import 'package:stokmobile/routes.dart';
+import 'package:stokmobile/loginpage/login_controller.dart';
+import 'routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,31 +17,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      routes: AppRoutes.routes,
-      home: const Scaffold(body: Center(child: HomeContent())),
-    );
-  }
-}
-
-class HomeContent extends StatelessWidget {
-  const HomeContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
           create: (context) {
-            return Productcontrollers();
+            return LoginController();
           },
         ),
       ],
-      child: MaterialApp(
-        routes: AppRoutes.routes,
-        initialRoute: ProductPage.route,
-      ),
+      builder: (context, child) {
+        return MaterialApp(
+          title: 'StokMobile',
+          theme: ThemeData(primarySwatch: Colors.teal),
+          initialRoute: AppRoutes.login,
+          routes: AppRoutes.routes,
+        );
+      },
     );
   }
 }
