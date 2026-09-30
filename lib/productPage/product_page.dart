@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stokmobile/productPage/controllers/product_controllers.dart';
-
-// Importe os seus widgets personalizados aqui (ajuste os caminhos se necessário)
 import 'package:stokmobile/shared/Widget/button_search.dart';
 import 'package:stokmobile/shared/Widget/list_view_horizontal.dart';
 import 'package:stokmobile/shared/Widget/products_section.dart';
-import 'package:stokmobile/shared/Widget/button_new_product.dart';
 import 'package:stokmobile/shared/Widget/custom_bottom_nav_bar.dart';
 
 class ProductPage extends StatefulWidget {
@@ -18,7 +15,7 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  int _selectedIndex = 2; // Mantendo o índice inicial da sua versão anterior
+  final int _selectedIndex = 1;
 
   @override
   void initState() {
@@ -51,49 +48,34 @@ class _ProductPageState extends State<ProductPage> {
           builder: (context, productCrontroller, child) => Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // 1. Barra de Pesquisa
               ButtonSearch(
                 onChanged: (valor) {
                   productCrontroller.search(valor);
                 },
               ),
 
-              // 2. Lista Horizontal de Categorias (Chips)
               ListViewHorizontal(
                 categoria: productCrontroller.categoria,
                 selectedIndex: productCrontroller.selectedIndex,
                 changeSelectedIndex: productCrontroller.changeSelectedIndex,
               ),
 
-              // 3. Verifica o estado de Loading (opcional, mas recomendado) e desenha a lista
               if (productCrontroller.productsState == ProductsViewState.loading)
                 const Expanded(
                   child: Center(child: CircularProgressIndicator()),
                 )
               else
-                // Seção de Produtos (Card)
                 products_section(
                   hasError:
                       productCrontroller.productsState ==
                       ProductsViewState.erros,
                   products: productCrontroller.products,
                 ),
-
-              // 4. Botão de Adicionar Novo Produto (O que ficava no canto inferior direito)
-              // const ButtonNewProduct(),
             ],
           ),
         ),
       ),
-      // 5. Barra de Navegação Inferior
-      bottomNavigationBar: CustomBottomNavBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-      ),
+      bottomNavigationBar: CustomBottomNavBar(currentIndex: _selectedIndex),
     );
   }
 }
