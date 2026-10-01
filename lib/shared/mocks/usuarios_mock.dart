@@ -8,6 +8,6 @@ class UsuarioMock {
 const usuariosMock = [
   UsuarioMock(email: 'bruno@gmail.com', senha: 'Bruno12345'),
   UsuarioMock(email: 'arthur@gmail.com', senha: 'Arthur12345'),
-  UsuarioMock(email: 'gabril@gmail.com', senha: 'Gabril12345'),
+  UsuarioMock(email: 'gabriel@gmail.com', senha: 'Gabriel12345'),
   UsuarioMock(email: 'luciano@gmail.com', senha: 'Luciano12345'),
 ];

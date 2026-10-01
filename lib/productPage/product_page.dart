@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stokmobile/productPage/controllers/product_controllers.dart';
+import 'package:stokmobile/shared/Widget/button_new_product.dart';
 import 'package:stokmobile/shared/Widget/button_search.dart';
 import 'package:stokmobile/shared/Widget/list_view_horizontal.dart';
 import 'package:stokmobile/shared/Widget/products_section.dart';
@@ -15,7 +16,7 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  final int _selectedIndex = 1;
+  int _selectedIndex = 1;
 
   @override
   void initState() {
@@ -28,18 +29,7 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Container(
-        height: 56,
-        width: 56,
-        decoration: BoxDecoration(
-          color: const Color(0xFF0D9488),
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.add_circle_outline_sharp, color: Colors.white),
-        ),
-      ),
+      floatingActionButton: ButtonNewProduct(),
       appBar: AppBar(title: const Text('Produtos'), shadowColor: Colors.white),
 
       body: Container(

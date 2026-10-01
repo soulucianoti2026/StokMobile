@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stokmobile/loginPage/page/login_page.dart';
+import 'package:stokmobile/loginpage/page/login_page.dart';
 
 import 'package:stokmobile/productPage/controllers/product_controllers.dart';
 

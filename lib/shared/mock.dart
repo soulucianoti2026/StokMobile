@@ -50,7 +50,7 @@ final List<Map<String, dynamic>> productsJson = [
     'name': 'Café Torrado Moído 500g', //[cite: 4]
     'imageUrl': 'https://i.postimg.cc/placeholder.png',
     'price': 22.50, //[cite: 4]
-    'stock': 45, //[cite: 4]
+    'stock': 200, //[cite: 4]
     'category': 'Alimentos', //[cite: 4]
     'description':
         'Café torrado e moído com aroma intenso, perfeito para começar o dia.',
