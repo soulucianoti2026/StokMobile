@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stokmobile/NewProductPage/controllers/new_product_controller.dart';
 
 class NewProductPage extends StatefulWidget {
   const NewProductPage({super.key});
@@ -9,13 +10,16 @@ class NewProductPage extends StatefulWidget {
 }
 
 class _NewProductPageState extends State<NewProductPage> {
+  // Controller com a lógica de validar e salvar
+  final controller = NewProductController();
+
   final nomeController = TextEditingController();
   final skuController = TextEditingController();
   final estoqueMinimoController = TextEditingController(text: '3');
   final valorController = TextEditingController();
 
-  // Opções da categoria, mock direto na classe por enquanto
-  final categorias = ['Eletrônicos', 'Acessórios', 'Periféricos', 'Casa'];
+  // Categorias iguais às do mock, para o filtro da ProductPage funcionar
+  final categorias = ['Eletrônicos', 'Escritório', 'Limpeza', 'Alimentos'];
   String categoriaSelecionada = 'Eletrônicos';
 
   // Número que aparece no contador
@@ -46,18 +50,39 @@ class _NewProductPageState extends State<NewProductPage> {
     );
   }
 
+  // Chama o controller. Se voltar um erro, mostra o aviso.
+  // Se voltar null, deu certo e a tela fecha.
   void salvar() {
-    // Se nome ou código estiverem vazios, mostra um aviso e para
-    if (nomeController.text.isEmpty || skuController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Preencha o nome e o código')),
-      );
+    String? erro = controller.salvar(
+      nome: nomeController.text,
+      codigo: skuController.text,
+      estoqueMinimo: estoqueMinimoController.text,
+      valor: valorController.text,
+      quantidade: quantidade,
+      categoria: categoriaSelecionada,
+    );
+
+    if (erro != null) {
+      mostrarAviso(erro);
       return;
     }
 
-    // Depois vamos salvar de verdade aqui
-
     Navigator.pop(context);
+  }
+
+  void mostrarAviso(String mensagem) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(mensagem)));
+  }
+
+  @override
+  void dispose() {
+    nomeController.dispose();
+    skuController.dispose();
+    estoqueMinimoController.dispose();
+    valorController.dispose();
+    super.dispose();
   }
 
   @override
@@ -73,7 +98,6 @@ class _NewProductPageState extends State<NewProductPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ---------- Topo: botão voltar + título ----------
                     Row(
                       children: [
                         GestureDetector(
@@ -121,6 +145,7 @@ class _NewProductPageState extends State<NewProductPage> {
                     const SizedBox(height: 6),
                     TextField(
                       controller: nomeController,
+                      textCapitalization: TextCapitalization.words,
                       decoration: estiloCampo(),
                     ),
                     const SizedBox(height: 16),
@@ -129,15 +154,17 @@ class _NewProductPageState extends State<NewProductPage> {
                     const SizedBox(height: 6),
                     TextField(
                       controller: skuController,
-                      // Atualiza a tela a cada letra, para mostrar a mensagem verde
+                      maxLength: 6,
+                      textCapitalization: TextCapitalization.characters,
+
                       onChanged: (texto) {
                         setState(() {});
                       },
                       decoration: estiloCampo(
                         icone: const Icon(Icons.qr_code_scanner),
-                      ),
+                      ).copyWith(counterText: ''),
                     ),
-                    if (skuController.text.isNotEmpty)
+                    if (skuController.text.length == 6)
                       const Padding(
                         padding: EdgeInsets.only(top: 6),
                         child: Row(
@@ -149,7 +176,7 @@ class _NewProductPageState extends State<NewProductPage> {
                             ),
                             SizedBox(width: 4),
                             Text(
-                              'Código único disponível para uso corporativo',
+                              'Código com 6 caracteres',
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Color(0xFF0D9488),
@@ -243,7 +270,6 @@ class _NewProductPageState extends State<NewProductPage> {
                         ),
                         const SizedBox(width: 16),
 
-                        // Lado direito: estoque mínimo
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -266,7 +292,9 @@ class _NewProductPageState extends State<NewProductPage> {
                     const SizedBox(height: 6),
                     TextField(
                       controller: valorController,
-                      keyboardType: TextInputType.number,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       decoration: estiloCampo(prefixo: 'R\$ '),
                     ),
                   ],
