@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stokmobile/nativesplashPage.dart';
+import 'package:stokmobile/NewProductPage/Page/new_product_page.dart';
 import 'package:stokmobile/homepage/home_page.dart';
 import 'package:stokmobile/loginPage/page/login_page.dart';
 import 'package:stokmobile/productManager/page/product_manage_page.dart';
@@ -16,5 +17,6 @@ abstract final class AppRoutes {
     ProductPage.route: (context) => ProductPage(),
     ProductManagePage.route: (context) => ProductManagePage(),
     ProductMovPage.route: (context) => ProductMovPage(),
+    NewProductPage.route: (context) => const NewProductPage(),
   };
 }

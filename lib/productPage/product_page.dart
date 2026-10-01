@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stokmobile/NewProductPage/Page/new_product_page.dart';
 import 'package:stokmobile/productPage/controllers/product_controllers.dart';
 import 'package:stokmobile/shared/Widget/button_search.dart';
 import 'package:stokmobile/shared/Widget/list_view_horizontal.dart';
@@ -36,7 +37,18 @@ class _ProductPageState extends State<ProductPage> {
           borderRadius: BorderRadius.circular(30),
         ),
         child: IconButton(
-          onPressed: () {},
+          // ALTERADO: antes era () {}
+          onPressed: () async {
+            final controller = context.read<Productcontrollers>();
+
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const NewProductPage()),
+            );
+
+            // quando voltar da tela de novo produto, atualiza a lista
+            controller.getproducts();
+          },
           icon: const Icon(Icons.add_circle_outline_sharp, color: Colors.white),
         ),
       ),
