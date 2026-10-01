@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stokmobile/loginPage/page/login_page.dart';
+import 'package:stokmobile/nativesplashPage.dart';
 
 import 'package:stokmobile/productPage/controllers/product_controllers.dart';
 
@@ -33,7 +33,8 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'StokMobile',
           theme: ThemeData(primarySwatch: Colors.teal),
-          initialRoute: LoginPage.route,
+          debugShowCheckedModeBanner: false,
+          initialRoute: NativeSplashPage.route,
           routes: AppRoutes.routes,
         );
       },

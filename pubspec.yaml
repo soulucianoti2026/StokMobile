@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   provider: ^6.1.5+1
   animated_snack_bar: ^0.4.0
+  flutter_svg: ^2.3.0
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +59,20 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/images/splash_symbol.svg
+    - assets/images/movement/
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter.ttf
+          weight: 400
+        - asset: assets/fonts/Inter.ttf
+          weight: 500
+        - asset: assets/fonts/Inter.ttf
+          weight: 600
+        - asset: assets/fonts/Inter.ttf
+          weight: 700
 
   # To add assets to your application, add an assets section, like this:
   # assets:
