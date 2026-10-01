@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stokmobile/nativesplashPage.dart';
 import 'package:stokmobile/NewProductPage/Page/new_product_page.dart';
 import 'package:stokmobile/homepage/home_page.dart';
 import 'package:stokmobile/loginPage/page/login_page.dart';
@@ -9,6 +10,7 @@ import 'package:stokmobile/lostpasswordPage/lostpasword_page.dart';
 
 abstract final class AppRoutes {
   static final Map<String, WidgetBuilder> routes = {
+    NativeSplashPage.route: (_) => const NativeSplashPage(),
     LoginPage.route: (_) => const LoginPage(),
     HomePage.route: (_) => const HomePage(),
     LostpaswordPage.route: (_) => const LostpaswordPage(),

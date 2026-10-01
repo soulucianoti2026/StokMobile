@@ -9,18 +9,25 @@ class AppElevatedButton extends StatelessWidget {
     this.onPressed,
     required this.type,
     this.backgroundColor,
+    this.textStyle,
+    this.elevation,
   });
 
   final String label;
   final VoidCallback? onPressed;
   final ButtonType type;
   final Color? backgroundColor;
+  final TextStyle? textStyle;
+  final double? elevation;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      style: _getStyle(),
+      style: _getStyle().copyWith(
+        textStyle: textStyle == null ? null : WidgetStatePropertyAll(textStyle),
+        elevation: elevation == null ? null : WidgetStatePropertyAll(elevation),
+      ),
       child: Text(label),
     );
   }
