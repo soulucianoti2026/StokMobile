@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stokmobile/shared/wigdets/app_elevated_button.dart';
+import 'package:stokmobile/shared/Widget/custom_bottom_nav_bar.dart';
 
 class ProductMovPage extends StatelessWidget {
   const ProductMovPage({super.key});
@@ -10,6 +11,7 @@ class ProductMovPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -29,7 +31,6 @@ class ProductMovPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Localizar produto
               Container(
                 width: double.infinity,
                 height: 44,
@@ -56,7 +57,6 @@ class ProductMovPage extends StatelessWidget {
 
               const SizedBox(height: 6),
 
-              // Selecionar produto
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(12),
@@ -96,7 +96,6 @@ class ProductMovPage extends StatelessWidget {
 
               const SizedBox(height: 6),
 
-              // Entrada / Saída
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(4),
@@ -146,7 +145,6 @@ class ProductMovPage extends StatelessWidget {
 
               const SizedBox(height: 6),
 
-              // Quantidade
               Container(
                 width: double.infinity,
                 height: 44,
@@ -166,7 +164,6 @@ class ProductMovPage extends StatelessWidget {
 
               const SizedBox(height: 8),
 
-              // Erro
               Container(
                 width: double.infinity,
                 height: 32,
@@ -193,7 +190,6 @@ class ProductMovPage extends StatelessWidget {
 
               const SizedBox(height: 6),
 
-              // Data
               Container(
                 height: 44,
                 width: double.infinity,
@@ -221,7 +217,6 @@ class ProductMovPage extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              // Botão
               AppElevatedButton(
                 label: 'Registrar Movimento',
                 type: ButtonType.outlined,
@@ -231,6 +226,7 @@ class ProductMovPage extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 2),
     );
   }
 }
