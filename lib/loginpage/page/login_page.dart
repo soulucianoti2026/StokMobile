@@ -1,8 +1,7 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stokmobile/homePage/home_page.dart';
-
+import 'package:stokmobile/homepage/home_page.dart';
 import 'package:stokmobile/loginpage/login_controller.dart';
 import 'package:stokmobile/lostpasswordPage/lostpasword_page.dart';
 import 'package:stokmobile/routes.dart';

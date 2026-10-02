@@ -5,12 +5,7 @@ import 'package:stokmobile/shared/mocks/mock_product.dart';
 enum ProductsViewState { loading, success, erros }
 
 class Productcontrollers extends ChangeNotifier {
-  List<String> categoria = [
-    'Todos',
-    'Estoque Baixo',
-    'Eletrônicos',
-    'Escritório',
-  ];
+  List<String> categoria = ['Todos', 'Estoque Baixo'];
 
   String _query = '';
 
@@ -18,28 +13,48 @@ class Productcontrollers extends ChangeNotifier {
 
   List<Product> get products {
     List<Product> listaFiltrada = _allProducts;
+
+    // Proteção: caso selectedIndex seja maior que a lista
+    if (selectedIndex >= categoria.length) {
+      selectedIndex = 0;
+    }
+
     String categoriaSelecionada = categoria[selectedIndex];
 
-    if (categoriaSelecionada != 'Todos') {
+    if (categoriaSelecionada == 'Estoque Baixo') {
       listaFiltrada = _allProducts.where((product) {
-        return product.category == categoriaSelecionada;
+        return product.stock <= 5;
+      }).toList();
+    } else if (categoriaSelecionada != 'Todos') {
+      listaFiltrada = _allProducts.where((product) {
+        return product.category.toLowerCase() ==
+            categoriaSelecionada.toLowerCase();
       }).toList();
     }
 
-    if (_query.isEmpty) {
-      return listaFiltrada;
+    if (_query.isNotEmpty) {
+      final querySearch = _query.toLowerCase();
+      listaFiltrada = listaFiltrada.where((product) {
+        return product.name.toLowerCase().contains(querySearch) ||
+            product.code.toLowerCase().contains(querySearch);
+      }).toList();
     }
 
-    final querySearch = _query.toLowerCase();
-    return listaFiltrada.where((product) {
-      return product.name.toLowerCase().contains(querySearch) ||
-          product.code.toLowerCase().contains(querySearch);
-    }).toList();
+    List<Product> listaOrdenada = listaFiltrada.toList();
+
+    listaOrdenada.sort((a, b) => a.stock.compareTo(b.stock));
+
+    return listaOrdenada;
   }
 
   int pageViewIndex = 0;
   int selectedIndex = 0;
   ProductsViewState productsState = ProductsViewState.loading;
+
+  void deleteProduct(Product product) {
+    _allProducts.removeWhere((element) => element.code == product.code);
+    notifyListeners();
+  }
 
   void search(String query) {
     _query = query;
@@ -61,11 +76,25 @@ class Productcontrollers extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateProduct(Product product) async {
+    Product findedProduct = _allProducts
+        .where((element) => element.code == product.code)
+        .first;
+    _allProducts[_allProducts.indexOf(findedProduct)] = product;
+    notifyListeners();
+  }
+
   Future<void> getproducts() async {
     try {
       _allProducts = productsJson.map((item) {
         return Product.fromJson(item);
       }).toList();
+
+      Set<String> categoriasUnicas = _allProducts
+          .map((p) => p.category)
+          .toSet();
+
+      categoria = ['Todos', 'Estoque Baixo', ...categoriasUnicas];
 
       changeproductsState(ProductsViewState.success);
     } catch (e) {

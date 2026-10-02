@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stokmobile/nativesplashPage.dart';
-
 import 'package:stokmobile/productPage/controllers/product_controllers.dart';
-
 import 'package:stokmobile/routes.dart';
 import 'package:stokmobile/loginpage/login_controller.dart';
 

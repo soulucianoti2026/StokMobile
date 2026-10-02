@@ -15,6 +15,7 @@ class ListViewHorizontal extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 50,
+
       child: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         scrollDirection: Axis.horizontal,
@@ -29,6 +30,7 @@ class ListViewHorizontal extends StatelessWidget {
               onSelected: (_) {
                 changeSelectedIndex(index);
               },
+              selectedColor: Colors.green.shade300,
             ),
           );
         },

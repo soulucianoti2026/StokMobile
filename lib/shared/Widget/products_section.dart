@@ -21,7 +21,7 @@ class products_section extends StatelessWidget {
           }
 
           if (products.isEmpty) {
-            return const Center(child: Text('Nenhum produto cadastrado.'));
+            return const Center(child: Text('Nenhum produt cadastrado.'));
           }
 
           return ListView.separated(
@@ -30,14 +30,14 @@ class products_section extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 padding: const EdgeInsets.all(6),
-                height: 92,
+                height: 100,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(width: 1.0),
                   color: Colors.white,
                 ),
-                child: products_card(product: products[index]),
+                child: ProductsCard(product: products[index]),
               );
             },
             separatorBuilder: (BuildContext context, int index) {
