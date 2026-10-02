@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stokmobile/loginpage/login_controller.dart';
 import 'package:stokmobile/productmodel/products_model.dart';
-import 'package:stokmobile/shared/mock.dart';
+import 'package:stokmobile/shared/mocks/mock_product.dart';
 import 'package:stokmobile/shared/Widget/custom_bottom_nav_bar.dart';
 
 const int kEstoqueMinimoPadrao = 10;

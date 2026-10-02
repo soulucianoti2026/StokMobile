@@ -1,30 +1,32 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:stokmobile/main.dart';
+import 'package:stokmobile/nativesplashPage.dart';
+import 'package:stokmobile/loginPage/page/login_page.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Splash appears for three seconds then opens login', (
+    tester,
+  ) async {
     await tester.pumpWidget(const MyApp());
+    expect(find.byType(NativeSplashPage), findsOneWidget);
+    expect(find.byType(LoginPage), findsNothing);
+    await tester.pump(const Duration(milliseconds: 2999));
+    expect(find.byType(NativeSplashPage), findsOneWidget);
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pumpAndSettle();
+    expect(find.byType(NativeSplashPage), findsNothing);
+    expect(find.byType(LoginPage), findsOneWidget);
+    expect(
+      Navigator.of(tester.element(find.byType(LoginPage))).canPop(),
+      isFalse,
+    );
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets('Disposing splash cancels navigation', (tester) async {
+    await tester.pumpWidget(const MaterialApp(home: NativeSplashPage()));
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump(const Duration(seconds: 4));
+    expect(tester.takeException(), isNull);
   });
 }

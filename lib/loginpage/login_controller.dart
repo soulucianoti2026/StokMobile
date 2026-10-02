@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stokmobile/loginpage/model/user.dart';
 import 'package:stokmobile/shared/exceptions/auth_exception.dart';
-import 'package:stokmobile/shared/mocks/usuarios_mock.dart';
+import 'package:stokmobile/shared/mocks/mock_users.dart';
 
 class LoginController extends ChangeNotifier {
   final RegExp _emailRegex = RegExp(r'^[\w.-]+@([\w-]+\.)+[\w-]{2,}$');

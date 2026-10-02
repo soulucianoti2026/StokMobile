@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stokmobile/NewProductPage/Page/new_product_page.dart';
 import 'package:stokmobile/productPage/controllers/product_controllers.dart';
 import 'package:stokmobile/shared/Widget/button_new_product.dart';
 import 'package:stokmobile/shared/Widget/button_search.dart';

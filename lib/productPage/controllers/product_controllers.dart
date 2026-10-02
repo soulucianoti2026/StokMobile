@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stokmobile/productmodel/products_model.dart';
-import 'package:stokmobile/shared/mock.dart';
+import 'package:stokmobile/shared/mocks/mock_product.dart';
 
 enum ProductsViewState { loading, success, erros }
 
