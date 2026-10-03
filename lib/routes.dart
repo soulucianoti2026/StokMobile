@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stokmobile/profilePage/profile_edit_page.dart';
+import 'package:stokmobile/registerPage/page/register_page.dart';
+import 'package:stokmobile/productHistory/page/productHistory.dart';
 import 'package:stokmobile/nativesplashPage.dart';
 import 'package:stokmobile/NewProductPage/Page/new_product_page.dart';
 import 'package:stokmobile/homepage/home_page.dart';
@@ -13,6 +16,9 @@ import 'package:stokmobile/productmodel/products_model.dart';
 
 abstract final class AppRoutes {
   static final Map<String, WidgetBuilder> routes = {
+    ProfileEditPage.route: (_) => const ProfileEditPage(),
+    RegisterPage.route: (_) => const RegisterPage(),
+    ProductHistoryPage.route: (_) => const ProductHistoryPage(),
     NativeSplashPage.route: (_) => const NativeSplashPage(),
     LoginPage.route: (_) => const LoginPage(),
     HomePage.route: (_) => const HomePage(),

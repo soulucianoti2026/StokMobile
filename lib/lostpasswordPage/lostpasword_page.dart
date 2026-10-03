@@ -68,9 +68,8 @@ class _LostpasswordView extends StatelessWidget {
                                   ),
                                 ),
                                 icon: const Icon(Icons.arrow_back, size: 18),
-                                onLongPress: () {
-                                  Navigator.pop(context);
-                                },
+                                onLongPress: () =>
+                                    controller.backToLogin(context),
                               ),
                             ),
                             const _RecoveryHeader(),

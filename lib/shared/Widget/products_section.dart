@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:stokmobile/productmodel/products_model.dart';
 import 'package:stokmobile/shared/Widget/products_card.dart';
 
-class products_section extends StatelessWidget {
-  const products_section({
+class ProductsSection extends StatelessWidget {
+  const ProductsSection({
     super.key,
     required this.hasError,
     required this.products,

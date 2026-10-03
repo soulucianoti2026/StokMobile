@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ListViewHorizontal extends StatelessWidget {
-  ListViewHorizontal({
+  const ListViewHorizontal({
     super.key,
     required this.selectedIndex,
     required this.changeSelectedIndex,

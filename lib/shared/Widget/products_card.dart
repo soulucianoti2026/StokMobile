@@ -289,10 +289,33 @@ class ProductDialogContent extends StatelessWidget {
         ),
         SizedBox(height: 12),
         GestureDetector(
-          onTap: () {
-            context.read<Productcontrollers>().deleteProduct(product);
+          onTap: () async {
+            final confirmed = await showDialog<bool>(
+              context: context,
+              barrierDismissible: false,
+              builder: (dialogContext) => AlertDialog(
+                title: const Text('Excluir produto'),
+                content: Text(
+                  'Tem certeza de que deseja excluir o produto "${product.name}"?',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(false),
+                    child: const Text('Não'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(true),
+                    style: TextButton.styleFrom(foregroundColor: Colors.red),
+                    child: const Text('Sim'),
+                  ),
+                ],
+              ),
+            );
 
-            Navigator.of(context).pop(); // Fechar o diálogo após a exclusão
+            if (confirmed != true || !context.mounted) return;
+
+            context.read<Productcontrollers>().deleteProduct(product);
+            Navigator.of(context).pop();
           },
           child: Container(
             padding: EdgeInsets.all(6),

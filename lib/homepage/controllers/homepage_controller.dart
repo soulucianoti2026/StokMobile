@@ -1,21 +1,34 @@
-// part of 'homepage.dart';
+import 'package:flutter/foundation.dart';
+import 'package:stokmobile/productmodel/products_model.dart';
+import 'package:stokmobile/shared/mocks/mock_product.dart';
 
-// class _HomepageController {
-//   List<_Product> get products => _HomepageMock.products;
+class HomepageController extends ChangeNotifier {
+  HomepageController() {
+    productsRevision.addListener(notifyListeners);
+  }
 
-//   List<_Product> get stockAlerts =>
-//       products.where((product) => product.lowStock).toList();
+  static const minimumStock = 10;
 
-//   int get stockValueCents => products.fold(
-//     0,
-//     (total, product) => total + product.quantity * product.priceCents,
-//   );
+  List<Product> get products => productsJson
+      .map(Product.fromJson)
+      .where((product) => product.isActive)
+      .toList();
+  int get totalProducts => products.length;
+  double get stockValue => products.fold<double>(
+    0,
+    (total, product) => total + product.stock * product.price,
+  );
+  List<Product> get stockAlerts {
+    final alerts = products
+        .where((product) => product.stock < product.minimumStock)
+        .toList();
+    alerts.sort((a, b) => a.stock.compareTo(b.stock));
+    return alerts;
+  }
 
-//   int get incomingToday => _HomepageMock.todayMovements
-//       .where((movement) => movement.quantity > 0)
-//       .fold(0, (total, movement) => total + movement.quantity);
-
-//   int get outgoingToday => _HomepageMock.todayMovements
-//       .where((movement) => movement.quantity < 0)
-//       .fold(0, (total, movement) => total - movement.quantity);
-// }
+  @override
+  void dispose() {
+    productsRevision.removeListener(notifyListeners);
+    super.dispose();
+  }
+}

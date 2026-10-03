@@ -4,6 +4,7 @@ class Product {
   final String imageUrl;
   final double price;
   final int stock;
+  final int minimumStock;
   final String category;
   final String description;
   final bool isActive; // Novo campo baseado no "Produto ativo" da imagem
@@ -14,6 +15,7 @@ class Product {
     required this.imageUrl,
     required this.price,
     required this.stock,
+    this.minimumStock = 10,
     required this.category,
     required this.description,
     required this.isActive,
@@ -26,6 +28,7 @@ class Product {
       imageUrl: json['imageUrl'] ?? '',
       price: (json['price'] as num?)?.toDouble() ?? 0.0,
       stock: json['stock'] ?? 0,
+      minimumStock: json['minimumStock'] ?? 10,
       category: json['category'] ?? '',
       description: json['description'] ?? '',
       // Se não vier no JSON, definimos como true (ativo) por padrão
@@ -42,6 +45,7 @@ class Product {
       'imageUrl': imageUrl,
       'price': price,
       'stock': stock,
+      'minimumStock': minimumStock,
       'category': category,
       'description': description,
       'isActive': isActive,
