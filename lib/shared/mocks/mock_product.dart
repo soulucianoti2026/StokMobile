@@ -1,3 +1,46 @@
+import 'package:flutter/foundation.dart';
+
+// Notifica as telas após alterações no catálogo compartilhado.
+final productsRevision = ValueNotifier<int>(0);
+
+void notifyProductsChanged() => productsRevision.value++;
+
+// Histórico demonstrativo: nomes e destinos representam o momento do registro.
+final List<Map<String, dynamic>> productMovementsJson = [
+  {
+    'productCode': 'COD-001',
+    'productName': 'Teclado Mecânico RGB',
+    'type': 'exit',
+    'quantity': 2,
+    'date': '2026-10-02T14:30:00',
+    'sector': 'Tecnologia da Informação',
+    'costCenter': 'CC-001',
+  },
+  {
+    'productCode': 'COD-002',
+    'productName': 'Papel A4 Chamex 75g',
+    'type': 'entry',
+    'quantity': 10,
+    'date': '2026-10-02T11:15:00',
+  },
+  {
+    'productCode': 'COD-003',
+    'productName': 'Detergente Líquido 5L',
+    'type': 'exit',
+    'quantity': 5,
+    'date': '2026-10-01T16:45:00',
+    'sector': 'Limpeza',
+    'costCenter': 'CC-003',
+  },
+  {
+    'productCode': 'COD-005',
+    'productName': 'Mouse Óptico Sem Fio',
+    'type': 'entry',
+    'quantity': 50,
+    'date': '2026-09-30T10:00:00',
+  },
+];
+
 final List<Map<String, dynamic>> productsJson = [
   // =========================
   // ELETRÓNICOS

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stokmobile/productManager/page/product_manage_page.dart';
+import 'package:stokmobile/NewProductPage/Page/new_product_page.dart';
 
 class ButtonNewProduct extends StatelessWidget {
   const ButtonNewProduct({super.key});
@@ -15,7 +15,7 @@ class ButtonNewProduct extends StatelessWidget {
       ),
       child: IconButton(
         onPressed: () {
-          Navigator.pushNamed(context, ProductManagePage.route);
+          Navigator.pushNamed(context, NewProductPage.route);
         },
         icon: const Icon(Icons.add_circle_outline_sharp, color: Colors.white),
       ),

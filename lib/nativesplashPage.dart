@@ -6,7 +6,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:stokmobile/loginPage/page/login_page.dart';
+import 'package:stokmobile/loginpage/page/login_page.dart';
 import 'package:stokmobile/shared/app_colors.dart';
 
 class NativeSplashPage extends StatefulWidget {

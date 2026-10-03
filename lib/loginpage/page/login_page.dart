@@ -2,9 +2,9 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stokmobile/homepage/home_page.dart';
-import 'package:stokmobile/loginpage/login_controller.dart';
+import 'package:stokmobile/loginpage/controllers/login_controller.dart';
 import 'package:stokmobile/lostpasswordPage/lostpasword_page.dart';
-import 'package:stokmobile/routes.dart';
+import 'package:stokmobile/registerPage/page/register_page.dart';
 import 'package:stokmobile/shared/app_colors.dart';
 import 'package:stokmobile/shared/exceptions/auth_exception.dart';
 import 'package:stokmobile/shared/widgets/app_check_box.dart';
@@ -135,6 +135,7 @@ class LoginPage extends StatelessWidget {
                         onPressed: () async {
                           try {
                             await controller.handleLogin();
+                            if (!context.mounted) return;
                             Navigator.pushNamed(context, HomePage.route);
                           } on AuthException catch (e) {
                             if (!context.mounted) return;
@@ -146,6 +147,11 @@ class LoginPage extends StatelessWidget {
                             ).show(context);
                           }
                         },
+                      ),
+                      TextButton(
+                        onPressed: () =>
+                            Navigator.pushNamed(context, RegisterPage.route),
+                        child: const Text('Criar conta'),
                       ),
                     ],
                   ),

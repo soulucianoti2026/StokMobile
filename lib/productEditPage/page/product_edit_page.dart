@@ -240,6 +240,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                               controller.updateProduct(
                                 Product(
                                   code: widget.product.code,
+                                  minimumStock: widget.product.minimumStock,
 
                                   name: _nameController.text,
                                   price:
