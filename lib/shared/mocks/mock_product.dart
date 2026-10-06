@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/foundation.dart';
 
 // Notifica as telas após alterações no catálogo compartilhado.
@@ -48,8 +50,7 @@ final List<Map<String, dynamic>> productsJson = [
   {
     'code': 'COD-001', //[cite: 3, 4]
     'name': 'Teclado Mecânico RGB', //[cite: 3, 4]
-    'imageUrl':
-        'https://i.postimg.cc/placeholder.png', // Pode substituir pelas imagens reais
+    'imageUrl': '', // Pode substituir pelas imagens reais
     'price': 250.00, //[cite: 4]
     'stock': 1, //[cite: 4]
     'category': 'Eletrônicos', //[cite: 3, 4]
@@ -63,7 +64,7 @@ final List<Map<String, dynamic>> productsJson = [
   {
     'code': 'COD-002', //[cite: 4]
     'name': 'Papel A4 Chamex 75g', //[cite: 4]
-    'imageUrl': 'https://i.postimg.cc/placeholder.png',
+    'imageUrl': '',
     'price': 28.00, //[cite: 4]
     'stock': 3, //[cite: 4]
     'category': 'Escritório', //[cite: 4]
@@ -77,7 +78,7 @@ final List<Map<String, dynamic>> productsJson = [
   {
     'code': 'COD-003', //[cite: 4]
     'name': 'Detergente Líquido 5L', //[cite: 4]
-    'imageUrl': 'https://i.postimg.cc/placeholder.png',
+    'imageUrl': '',
     'price': 18.90, //[cite: 4]
     'stock': 15, //[cite: 4]
     'category': 'Limpeza', //[cite: 4]
@@ -91,7 +92,7 @@ final List<Map<String, dynamic>> productsJson = [
   {
     'code': 'COD-004', //[cite: 4]
     'name': 'Café Torrado Moído 500g', //[cite: 4]
-    'imageUrl': 'https://i.postimg.cc/placeholder.png',
+    'imageUrl': '',
     'price': 22.50, //[cite: 4]
     'stock': 200, //[cite: 4]
     'category': 'Alimentos', //[cite: 4]
@@ -101,7 +102,7 @@ final List<Map<String, dynamic>> productsJson = [
   {
     'code': 'COD-004', //[cite: 4]
     'name': 'Café Torrado Moído 500g', //[cite: 4]
-    'imageUrl': 'https://i.postimg.cc/placeholder.png',
+    'imageUrl': '',
     'price': 22.50, //[cite: 4]
     'stock': 45, //[cite: 4]
     'category': 'Alimentos', //[cite: 4]
@@ -111,7 +112,7 @@ final List<Map<String, dynamic>> productsJson = [
   {
     'code': 'COD-004', //[cite: 4]
     'name': 'Café Torrado Moído 500g', //[cite: 4]
-    'imageUrl': 'https://i.postimg.cc/placeholder.png',
+    'imageUrl': '',
     'price': 22.50, //[cite: 4]
     'stock': 45, //[cite: 4]
     'category': 'Alimentos', //[cite: 4]
@@ -121,7 +122,7 @@ final List<Map<String, dynamic>> productsJson = [
   {
     'code': 'COD-004', //[cite: 4]
     'name': 'Café Torrado Moído 500g', //[cite: 4]
-    'imageUrl': 'https://i.postimg.cc/placeholder.png',
+    'imageUrl': '',
     'price': 22.50, //[cite: 4]
     'stock': 45, //[cite: 4]
     'category': 'Alimentos', //[cite: 4]
@@ -129,3 +130,56 @@ final List<Map<String, dynamic>> productsJson = [
         'Café torrado e moído com aroma intenso, perfeito para começar o dia.',
   },
 ];
+
+/// A complete local snapshot, including photo bytes, survives app restarts.
+class MockProductsRepository {
+  MockProductsRepository({FlutterSecureStorage? storage})
+    : _storage = storage ?? const FlutterSecureStorage();
+  static final instance = MockProductsRepository();
+  static const storageKey = 'stokmobile.products.v1';
+  final FlutterSecureStorage _storage;
+  Future<void>? _pending;
+
+  Future<void> load() async {
+    final raw = await _storage.read(key: storageKey);
+    if (raw == null) return;
+    final saved = (jsonDecode(raw) as List)
+        .map((item) => Map<String, dynamic>.from(item as Map))
+        .toList();
+    productsJson
+      ..clear()
+      ..addAll(saved);
+    notifyProductsChanged();
+  }
+
+  Future<void> save(Map<String, dynamic> product, {bool create = false}) {
+    Future<void> write() async {
+      final next = productsJson
+          .map((p) => Map<String, dynamic>.from(p))
+          .toList();
+      final index = next.indexWhere((p) => p['code'] == product['code']);
+      if (create) {
+        if (index >= 0) throw StateError('Este código já existe');
+        next.insert(0, product);
+      } else {
+        if (index < 0) throw StateError('Produto não encontrado');
+        next[index] = {...next[index], ...product};
+      }
+      await _storage.write(key: storageKey, value: jsonEncode(next));
+      productsJson
+        ..clear()
+        ..addAll(next);
+      notifyProductsChanged();
+    }
+
+    final operation = _pending == null
+        ? write()
+        : _pending!.then((_) => write());
+    final queued = operation.then<void>((_) {}, onError: (Object _) {});
+    _pending = queued;
+    queued.then((_) {
+      if (identical(_pending, queued)) _pending = null;
+    });
+    return operation;
+  }
+}

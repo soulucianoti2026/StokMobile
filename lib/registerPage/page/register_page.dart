@@ -210,7 +210,11 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
-                    child: _icon('camera_preview', 22),
+                    child: const Icon(
+                      Icons.account_box,
+                      size: 32,
+                      color: Colors.white,
+                    ),
                   ),
                   Text(
                     'Nenhuma foto adicionada',

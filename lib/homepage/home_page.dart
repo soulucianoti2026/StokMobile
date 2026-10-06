@@ -147,46 +147,54 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildStatGrid() {
-    return GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      mainAxisSpacing: 12,
-      crossAxisSpacing: 12,
-      childAspectRatio: 1.35,
-      children: [
-        _StatCard(
-          icon: Icons.inventory_2_outlined,
-          iconColor: const Color(0xFF3D6BFF),
-          iconBg: const Color(0xFFE8EDFF),
-          value: '$_totalProdutos',
-          label: 'Total de Produtos',
-        ),
-        _StatCard(
-          icon: Icons.attach_money,
-          iconColor: const Color(0xFF3D6BFF),
-          iconBg: const Color(0xFFE8EDFF),
-          value: _formatBRL(_valorEstoque),
-          label: 'Valor do Estoque',
-        ),
-        // Entradas/Saídas, ainda não temos histórico de movimentação.
-        _StatCard(
-          icon: Icons.arrow_downward,
-          iconColor: const Color(0xFF1DBE6B),
-          iconBg: const Color(0xFFE4F8ED),
-          value: '—',
-          valueColor: const Color(0xFF1DBE6B),
-          label: 'Entradas Hoje',
-        ),
-        _StatCard(
-          icon: Icons.arrow_upward,
-          iconColor: const Color(0xFFFF4D4D),
-          iconBg: const Color(0xFFFFE9E9),
-          value: '—',
-          valueColor: const Color(0xFFFF4D4D),
-          label: 'Saídas Hoje',
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          children:
+              [
+                    _StatCard(
+                      icon: Icons.inventory_2_outlined,
+                      iconColor: const Color(0xFF3D6BFF),
+                      iconBg: const Color(0xFFE8EDFF),
+                      value: '$_totalProdutos',
+                      label: 'Total de Produtos',
+                    ),
+                    _StatCard(
+                      icon: Icons.attach_money,
+                      iconColor: const Color(0xFF3D6BFF),
+                      iconBg: const Color(0xFFE8EDFF),
+                      value: _formatBRL(_valorEstoque),
+                      label: 'Valor do Estoque',
+                    ),
+                    // Entradas/Saídas, ainda não temos histórico de movimentação.
+                    _StatCard(
+                      icon: Icons.arrow_downward,
+                      iconColor: const Color(0xFF1DBE6B),
+                      iconBg: const Color(0xFFE4F8ED),
+                      value: '—',
+                      valueColor: const Color(0xFF1DBE6B),
+                      label: 'Entradas Hoje',
+                    ),
+                    _StatCard(
+                      icon: Icons.arrow_upward,
+                      iconColor: const Color(0xFFFF4D4D),
+                      iconBg: const Color(0xFFFFE9E9),
+                      value: '—',
+                      valueColor: const Color(0xFFFF4D4D),
+                      label: 'Saídas Hoje',
+                    ),
+                  ]
+                  .map(
+                    (card) => SizedBox(
+                      width: (constraints.maxWidth - 12) / 2,
+                      child: card,
+                    ),
+                  )
+                  .toList(),
+        );
+      },
     );
   }
 
@@ -335,7 +343,7 @@ class _StatCard extends StatelessWidget {
             ),
             child: Icon(icon, size: 18, color: iconColor),
           ),
-          const Spacer(),
+          const SizedBox(height: 12),
           Text(
             value,
             style: TextStyle(

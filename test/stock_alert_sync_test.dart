@@ -1,3 +1,4 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -11,8 +12,10 @@ import 'package:stokmobile/productmodel/products_model.dart';
 import 'package:stokmobile/shared/mocks/mock_product.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   late List<Map<String, dynamic>> original;
   setUp(() {
+    FlutterSecureStorage.setMockInitialValues({});
     original = productsJson
         .map((item) => Map<String, dynamic>.from(item))
         .toList();
@@ -80,7 +83,7 @@ void main() {
     expect(home.stockAlerts, isEmpty);
     expect(products.products.single.stock, 10);
     expect(
-      NewProductController().salvar(
+      await NewProductController().salvar(
         nome: 'Novo Produto',
         codigo: 'DEF456',
         estoqueMinimo: '3',

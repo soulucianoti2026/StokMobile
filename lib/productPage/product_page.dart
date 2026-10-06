@@ -32,36 +32,39 @@ class _ProductPageState extends State<ProductPage> {
       floatingActionButton: ButtonNewProduct(),
       appBar: AppBar(title: const Text('Produtos'), shadowColor: Colors.white),
 
-      body: Container(
-        color: Colors.grey.shade200,
-        child: Consumer<Productcontrollers>(
-          builder: (context, productCrontroller, child) => Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ButtonSearch(
-                onChanged: (valor) {
-                  productCrontroller.search(valor);
-                },
-              ),
-
-              ListViewHorizontal(
-                categoria: productCrontroller.categoria,
-                selectedIndex: productCrontroller.selectedIndex,
-                changeSelectedIndex: productCrontroller.changeSelectedIndex,
-              ),
-
-              if (productCrontroller.productsState == ProductsViewState.loading)
-                const Expanded(
-                  child: Center(child: CircularProgressIndicator()),
-                )
-              else
-                ProductsSection(
-                  hasError:
-                      productCrontroller.productsState ==
-                      ProductsViewState.erros,
-                  products: productCrontroller.products,
+      body: SafeArea(
+        child: Container(
+          color: Colors.grey.shade200,
+          child: Consumer<Productcontrollers>(
+            builder: (context, productCrontroller, child) => Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ButtonSearch(
+                  onChanged: (valor) {
+                    productCrontroller.search(valor);
+                  },
                 ),
-            ],
+
+                ListViewHorizontal(
+                  categoria: productCrontroller.categoria,
+                  selectedIndex: productCrontroller.selectedIndex,
+                  changeSelectedIndex: productCrontroller.changeSelectedIndex,
+                ),
+
+                if (productCrontroller.productsState ==
+                    ProductsViewState.loading)
+                  const Expanded(
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                else
+                  ProductsSection(
+                    hasError:
+                        productCrontroller.productsState ==
+                        ProductsViewState.erros,
+                    products: productCrontroller.products,
+                  ),
+              ],
+            ),
           ),
         ),
       ),

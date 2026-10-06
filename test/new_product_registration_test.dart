@@ -1,3 +1,4 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stokmobile/NewProductPage/Page/new_product_page.dart';
@@ -8,8 +9,10 @@ import 'package:stokmobile/productmodel/products_model.dart';
 import 'package:stokmobile/homepage/controllers/homepage_controller.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   late List<Map<String, dynamic>> original;
   setUp(() {
+    FlutterSecureStorage.setMockInitialValues({});
     original = productsJson.map((p) => Map<String, dynamic>.from(p)).toList();
   });
   tearDown(() {
@@ -18,51 +21,54 @@ void main() {
       ..addAll(original);
   });
 
-  test('Saves real barcodes, product names, currency and minimum stock', () {
-    final controller = NewProductController();
-    addTearDown(controller.dispose);
-    expect(
-      controller.salvar(
-        nome: 'Papel A4 75g',
-        codigo: '7891234567895',
-        estoqueMinimo: '25',
-        valor: '1.234,56',
-        quantidade: 20,
-        categoria: 'Escritório',
-      ),
-      isNull,
-    );
-    final saved = Product.fromJson(productsJson.first);
-    expect(saved.code, '7891234567895');
-    expect(saved.price, 1234.56);
-    expect(saved.minimumStock, 25);
-    final home = HomepageController();
-    addTearDown(home.dispose);
-    expect(home.stockAlerts.any((p) => p.code == saved.code), isTrue);
-    expect(controller.validateCode(saved.code), 'Este código já existe');
-    expect(
-      controller.salvar(
-        nome: 'Produto',
-        codigo: 'NEW-001',
-        estoqueMinimo: '-1',
-        valor: '10',
-        quantidade: 0,
-        categoria: 'Escritório',
-      ),
-      isNotNull,
-    );
-    expect(
-      controller.salvar(
-        nome: 'Produto',
-        codigo: 'NEW-001',
-        estoqueMinimo: '1',
-        valor: 'NaN',
-        quantidade: 0,
-        categoria: 'Escritório',
-      ),
-      isNotNull,
-    );
-  });
+  test(
+    'Saves real barcodes, product names, currency and minimum stock',
+    () async {
+      final controller = NewProductController();
+      addTearDown(controller.dispose);
+      expect(
+        await controller.salvar(
+          nome: 'Papel A4 75g',
+          codigo: '7891234567895',
+          estoqueMinimo: '25',
+          valor: '1.234,56',
+          quantidade: 20,
+          categoria: 'Escritório',
+        ),
+        isNull,
+      );
+      final saved = Product.fromJson(productsJson.first);
+      expect(saved.code, '7891234567895');
+      expect(saved.price, 1234.56);
+      expect(saved.minimumStock, 25);
+      final home = HomepageController();
+      addTearDown(home.dispose);
+      expect(home.stockAlerts.any((p) => p.code == saved.code), isTrue);
+      expect(controller.validateCode(saved.code), 'Este código já existe');
+      expect(
+        await controller.salvar(
+          nome: 'Produto',
+          codigo: 'NEW-001',
+          estoqueMinimo: '-1',
+          valor: '10',
+          quantidade: 0,
+          categoria: 'Escritório',
+        ),
+        isNotNull,
+      );
+      expect(
+        await controller.salvar(
+          nome: 'Produto',
+          codigo: 'NEW-001',
+          estoqueMinimo: '1',
+          valor: 'NaN',
+          quantidade: 0,
+          categoria: 'Escritório',
+        ),
+        isNotNull,
+      );
+    },
+  );
 
   test('Scan handles a result, cancellation and failure', () async {
     final controller = NewProductController();

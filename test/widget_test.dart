@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stokmobile/main.dart';
 import 'package:stokmobile/nativesplashPage.dart';
-import 'package:stokmobile/loginPage/page/login_page.dart';
+import 'package:stokmobile/loginpage/page/login_page.dart';
 
 void main() {
   testWidgets('Splash appears for three seconds then opens login', (

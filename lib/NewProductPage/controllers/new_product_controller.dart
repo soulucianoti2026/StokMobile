@@ -10,6 +10,8 @@ class NewProductController extends ChangeNotifier {
   int quantidade = 10;
   String categoria = 'Eletrônicos';
   bool scanning = false;
+  bool saving = false;
+  String imageUrl = '';
   bool _disposed = false;
   String? error;
 
@@ -84,27 +86,36 @@ class NewProductController extends ChangeNotifier {
     }
   }
 
-  bool submit() {
-    error = salvar(
-      nome: nome.text,
-      codigo: sku.text,
-      estoqueMinimo: estoqueMinimo.text,
-      valor: valor.text,
-      quantidade: quantidade,
-      categoria: categoria,
-    );
+  Future<bool> submit() async {
+    if (saving) return false;
+    saving = true;
     notifyListeners();
+    try {
+      error = await salvar(
+        nome: nome.text,
+        codigo: sku.text,
+        estoqueMinimo: estoqueMinimo.text,
+        valor: valor.text,
+        quantidade: quantidade,
+        categoria: categoria,
+      );
+    } catch (_) {
+      error = 'Não foi possível salvar o produto. Tente novamente.';
+    } finally {
+      saving = false;
+      if (!_disposed) notifyListeners();
+    }
     return error == null;
   }
 
-  String? salvar({
+  Future<String?> salvar({
     required String nome,
     required String codigo,
     required String estoqueMinimo,
     required String valor,
     required int quantidade,
     required String categoria,
-  }) {
+  }) async {
     nome = nome.trim();
     codigo = codigo.trim().toUpperCase();
     if (nome.isEmpty) return 'Informe o nome do produto';
@@ -129,7 +140,7 @@ class NewProductController extends ChangeNotifier {
     final product = Product(
       code: codigo,
       name: nome,
-      imageUrl: '',
+      imageUrl: imageUrl,
       price: price,
       stock: quantidade,
       minimumStock: minimum,
@@ -137,8 +148,7 @@ class NewProductController extends ChangeNotifier {
       description: '',
       isActive: true,
     );
-    productsJson.insert(0, product.toJson());
-    notifyProductsChanged();
+    await MockProductsRepository.instance.save(product.toJson(), create: true);
     return null;
   }
 

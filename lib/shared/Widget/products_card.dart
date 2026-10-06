@@ -1,5 +1,4 @@
-import 'dart:ffi';
-
+import 'package:stokmobile/shared/widgets/product_photo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stokmobile/productEditPage/page/product_edit_page.dart';
@@ -111,15 +110,20 @@ class ProductsCard extends StatelessWidget {
             const SizedBox(height: 8),
             Row(
               children: [
-                Text(
-                  product.name,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1E293B),
+                if (product.imageUrl.isNotEmpty) ...[
+                  ProductPhoto(photo: product.imageUrl, size: 48),
+                  const SizedBox(width: 8),
+                ],
+                Expanded(
+                  child: Text(
+                    product.name,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1E293B),
+                    ),
                   ),
                 ),
-                const Spacer(),
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,

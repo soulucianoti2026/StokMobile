@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>NSCameraUsageDescription</key>
-    <string>A câmera é usada para tirar sua foto de cadastro e ler códigos de barras dos produtos.</string>
+    <string>A câmera é usada para tirar fotos de cadastro e dos produtos e ler códigos de barras dos produtos.</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>A galeria é usada para selecionar sua foto de cadastro.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>

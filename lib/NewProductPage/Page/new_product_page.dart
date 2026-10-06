@@ -1,3 +1,4 @@
+import 'package:stokmobile/shared/widgets/product_photo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -91,9 +92,9 @@ class _NewProductPageState extends State<NewProductPage> {
       );
     },
   );
-  void _save() {
+  Future<void> _save() async {
     FocusScope.of(context).unfocus();
-    if (controller.submit()) Navigator.pop(context, true);
+    if (await controller.submit() && mounted) Navigator.pop(context, true);
   }
 
   Future<void> _scan() async {
@@ -215,6 +216,13 @@ class _NewProductPageState extends State<NewProductPage> {
                               ),
                             ),
                           ],
+                        ),
+                        const SizedBox(height: 12),
+                        ProductPhotoPicker(
+                          photo: controller.imageUrl,
+                          enabled: !controller.saving,
+                          onChanged: (photo) =>
+                              setState(() => controller.imageUrl = photo),
                         ),
                         const SizedBox(height: 12),
                         _field(
@@ -379,7 +387,7 @@ class _NewProductPageState extends State<NewProductPage> {
                             weight: FontWeight.w600,
                             color: AppColors.white,
                           ),
-                          onPressed: _save,
+                          onPressed: controller.saving ? null : _save,
                         ),
                       ]),
                     ),

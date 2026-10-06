@@ -87,12 +87,7 @@ class Productcontrollers extends ChangeNotifier {
   }
 
   Future<void> updateProduct(Product product) async {
-    final index = productsJson.indexWhere(
-      (item) => item['code'] == product.code,
-    );
-    if (index < 0) return;
-    productsJson[index] = {...productsJson[index], ...product.toJson()};
-    notifyProductsChanged();
+    await MockProductsRepository.instance.save(product.toJson());
   }
 
   Future<void> getproducts() async {

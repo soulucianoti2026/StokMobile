@@ -30,7 +30,7 @@ class ProductsSection extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 padding: const EdgeInsets.all(6),
-                height: 100,
+                constraints: const BoxConstraints(minHeight: 100),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),

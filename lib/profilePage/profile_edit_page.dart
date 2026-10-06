@@ -48,14 +48,16 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     if (_controller == null) {
       return Scaffold(
         appBar: AppBar(title: const Text('Editar perfil')),
-        body: Center(
-          child: TextButton(
-            onPressed: () => Navigator.pushNamedAndRemoveUntil(
-              context,
-              LoginPage.route,
-              (_) => false,
+        body: SafeArea(
+          child: Center(
+            child: TextButton(
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                context,
+                LoginPage.route,
+                (_) => false,
+              ),
+              child: const Text('Entre na sua conta para editar o perfil'),
             ),
-            child: const Text('Entre na sua conta para editar o perfil'),
           ),
         ),
       );

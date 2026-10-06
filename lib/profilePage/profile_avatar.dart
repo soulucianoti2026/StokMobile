@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stokmobile/registerPage/services/user_photo_storage.dart';
 
 class ProfileAvatar extends StatefulWidget {
@@ -15,7 +14,7 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
   Future<Uint8List>? _photo;
 
   void _load() {
-    _photo = widget.photo.isEmpty
+    _photo = widget.photo.trim().isEmpty
         ? null
         : UserPhotoStorage()
               .resolve(widget.photo)
@@ -34,11 +33,10 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
     if (oldWidget.photo != widget.photo) _load();
   }
 
-  Widget _placeholder() => SvgPicture.asset(
-    'assets/images/register/avatar.svg',
-    width: 100,
-    height: 100,
-    semanticsLabel: 'Perfil sem foto',
+  Widget _placeholder() => const Icon(
+    Icons.account_box,
+    size: 100,
+    semanticLabel: 'Perfil sem foto',
   );
 
   @override
@@ -47,6 +45,7 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
     height: 100,
     child: ClipOval(
       child: FutureBuilder<Uint8List>(
+        key: ValueKey(widget.photo),
         future: _photo,
         builder: (context, snapshot) => snapshot.hasData
             ? Image.memory(
