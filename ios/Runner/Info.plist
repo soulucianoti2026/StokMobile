@@ -5,7 +5,7 @@
     <key>NSCameraUsageDescription</key>
     <string>A câmera é usada para tirar fotos de cadastro e dos produtos e ler códigos de barras dos produtos.</string>
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>A galeria é usada para selecionar sua foto de cadastro.</string>
+    <string>A galeria é usada para selecionar fotos de cadastro e dos produtos.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

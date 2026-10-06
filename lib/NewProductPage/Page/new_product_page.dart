@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stokmobile/NewProductPage/controllers/new_product_controller.dart';
 import 'package:stokmobile/NewProductPage/Page/barcode_scanner_page.dart';
 import 'package:stokmobile/shared/app_colors.dart';
-import 'package:stokmobile/shared/wigdets/app_elevated_button.dart';
+import 'package:stokmobile/shared/widgets/app_elevated_button.dart';
 
 class NewProductPage extends StatefulWidget {
   const NewProductPage({super.key, this.scanBarcode});

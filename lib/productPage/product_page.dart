@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stokmobile/productPage/controllers/product_controllers.dart';
-import 'package:stokmobile/shared/Widget/button_new_product.dart';
-import 'package:stokmobile/shared/Widget/button_search.dart';
-import 'package:stokmobile/shared/Widget/list_view_horizontal.dart';
-import 'package:stokmobile/shared/Widget/products_section.dart';
-import 'package:stokmobile/shared/Widget/custom_bottom_nav_bar.dart';
+import 'package:stokmobile/shared/widgets/button_new_product.dart';
+import 'package:stokmobile/shared/widgets/button_search.dart';
+import 'package:stokmobile/shared/widgets/list_view_horizontal.dart';
+import 'package:stokmobile/shared/widgets/products_section.dart';
+import 'package:stokmobile/shared/widgets/custom_bottom_nav_bar.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});

@@ -58,7 +58,16 @@ class ProductMovController extends ChangeNotifier {
     if (error != null) return false;
     final delta = operation == MovementOperation.entry ? quantity! : -quantity!;
     _source[selectedIndex]['stock'] = selectedProduct!.stock + delta;
-    if (identical(_source, productsJson)) notifyProductsChanged();
+    if (identical(_source, productsJson)) {
+      productMovementsJson.add({
+        'productCode': selectedProduct!.code,
+        'productName': selectedProduct!.name,
+        'type': operation == MovementOperation.entry ? 'entry' : 'exit',
+        'quantity': quantity!,
+        'date': DateTime.now().toIso8601String(),
+      });
+      notifyProductsChanged();
+    }
     quantityText = '';
     notifyListeners();
     return true;

@@ -49,13 +49,26 @@ class ProductHistoryController extends ChangeNotifier {
   ProductHistoryController({
     List<Map<String, dynamic>>? source,
     DateTime Function()? now,
-  }) : _records = (source ?? productMovementsJson)
-           .map(ProductMovement.fromJson)
-           .toList(),
-       _now = now ?? DateTime.now;
+  }) : _source = source ?? productMovementsJson,
+       _now = now ?? DateTime.now {
+    if (identical(_source, productMovementsJson)) {
+      productsRevision.addListener(notifyListeners);
+    }
+  }
 
-  final List<ProductMovement> _records;
+  final List<Map<String, dynamic>> _source;
+  Iterable<ProductMovement> get _records =>
+      _source.map(ProductMovement.fromJson);
   final DateTime Function() _now;
+
+  @override
+  void dispose() {
+    if (identical(_source, productMovementsJson)) {
+      productsRevision.removeListener(notifyListeners);
+    }
+    super.dispose();
+  }
+
   String? _productCode;
   HistoryMovementType? _type;
   String? get productCode => _productCode;

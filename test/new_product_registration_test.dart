@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stokmobile/NewProductPage/Page/new_product_page.dart';
 import 'package:stokmobile/NewProductPage/controllers/new_product_controller.dart';
-import 'package:stokmobile/shared/Widget/button_new_product.dart';
 import 'package:stokmobile/shared/mocks/mock_product.dart';
+import 'package:stokmobile/shared/widgets/button_new_product.dart';
 import 'package:stokmobile/productmodel/products_model.dart';
 import 'package:stokmobile/homepage/controllers/homepage_controller.dart';
 

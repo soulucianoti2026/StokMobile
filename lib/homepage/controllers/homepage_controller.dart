@@ -9,6 +9,25 @@ class HomepageController extends ChangeNotifier {
 
   static const minimumStock = 10;
 
+  int get entriesToday => _quantityToday('entry');
+  int get exitsToday => _quantityToday('exit');
+
+  int _quantityToday(String type) {
+    final now = DateTime.now();
+    return productMovementsJson
+        .where((movement) {
+          final date = DateTime.parse(movement['date'] as String).toLocal();
+          return movement['type'] == type &&
+              date.year == now.year &&
+              date.month == now.month &&
+              date.day == now.day;
+        })
+        .fold<int>(
+          0,
+          (total, movement) => total + (movement['quantity'] as int),
+        );
+  }
+
   List<Product> get products => productsJson
       .map(Product.fromJson)
       .where((product) => product.isActive)

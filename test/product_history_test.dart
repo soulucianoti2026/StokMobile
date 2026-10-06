@@ -2,8 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:stokmobile/productHistory/controllers/controller.dart';
 import 'package:stokmobile/productHistory/page/productHistory.dart';
+import 'package:stokmobile/productMovPage/controllers/productMovePage_controller.dart';
+import 'package:stokmobile/shared/mocks/mock_product.dart';
 
 void main() {
+  testWidgets('Open history updates after entries and exits', (tester) async {
+    final products = productsJson
+        .map((p) => Map<String, dynamic>.from(p))
+        .toList();
+    final history = List<Map<String, dynamic>>.from(productMovementsJson);
+    final movement = ProductMovController();
+    addTearDown(() {
+      movement.dispose();
+      productsJson
+        ..clear()
+        ..addAll(products);
+      productMovementsJson
+        ..clear()
+        ..addAll(history);
+    });
+    productMovementsJson.clear();
+    await tester.pumpWidget(const MaterialApp(home: ProductHistoryPage()));
+    expect(find.text('Nenhuma movimentação registrada'), findsOneWidget);
+    movement.setOperation(MovementOperation.entry);
+    movement.setQuantity('7');
+    expect(movement.register(), isTrue);
+    await tester.pumpAndSettle();
+    expect(find.text('+7 un'), findsOneWidget);
+    movement.setOperation(MovementOperation.exit);
+    movement.setQuantity('3');
+    expect(movement.register(), isTrue);
+    await tester.pumpAndSettle();
+    expect(find.text('-3 un'), findsOneWidget);
+    expect(find.text('+7 un'), findsOneWidget);
+    await tester.tap(find.text('Tipo: Todas'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Tipo: Saída').last);
+    await tester.pumpAndSettle();
+    expect(find.text('+7 un'), findsNothing);
+    expect(find.text('-3 un'), findsOneWidget);
+    movement.setQuantity('2');
+    expect(movement.register(), isTrue);
+    await tester.pumpAndSettle();
+    expect(find.text('-2 un'), findsOneWidget);
+    expect(find.text('+7 un'), findsNothing);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
   test('Filters by product and type and orders newest first', () {
     final controller = ProductHistoryController();
     addTearDown(controller.dispose);
