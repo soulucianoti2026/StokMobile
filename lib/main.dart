@@ -1,11 +1,16 @@
+import 'package:stokmobile/shared/mocks/mock_product.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:stokmobile/loginpage/controllers/login_controller.dart';
 import 'package:stokmobile/nativesplashPage.dart';
 import 'package:stokmobile/productPage/controllers/product_controllers.dart';
 import 'package:stokmobile/routes.dart';
-import 'package:stokmobile/loginpage/login_controller.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await MockProductsRepository.instance.load();
   runApp(const MyApp());
 }
 

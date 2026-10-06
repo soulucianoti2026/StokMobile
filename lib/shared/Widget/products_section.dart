@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:stokmobile/productmodel/products_model.dart';
 import 'package:stokmobile/shared/Widget/products_card.dart';
 
-class products_section extends StatelessWidget {
-  const products_section({
+class ProductsSection extends StatelessWidget {
+  const ProductsSection({
     super.key,
     required this.hasError,
     required this.products,
@@ -30,7 +30,7 @@ class products_section extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 padding: const EdgeInsets.all(6),
-                height: 100,
+                constraints: const BoxConstraints(minHeight: 100),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),

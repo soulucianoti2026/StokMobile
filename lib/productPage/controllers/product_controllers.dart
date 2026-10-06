@@ -5,6 +5,16 @@ import 'package:stokmobile/shared/mocks/mock_product.dart';
 enum ProductsViewState { loading, success, erros }
 
 class Productcontrollers extends ChangeNotifier {
+  Productcontrollers() {
+    productsRevision.addListener(getproducts);
+  }
+
+  @override
+  void dispose() {
+    productsRevision.removeListener(getproducts);
+    super.dispose();
+  }
+
   List<String> categoria = ['Todos', 'Estoque Baixo'];
 
   String _query = '';
@@ -23,7 +33,7 @@ class Productcontrollers extends ChangeNotifier {
 
     if (categoriaSelecionada == 'Estoque Baixo') {
       listaFiltrada = _allProducts.where((product) {
-        return product.stock <= 5;
+        return product.isActive && product.stock < product.minimumStock;
       }).toList();
     } else if (categoriaSelecionada != 'Todos') {
       listaFiltrada = _allProducts.where((product) {
@@ -52,8 +62,8 @@ class Productcontrollers extends ChangeNotifier {
   ProductsViewState productsState = ProductsViewState.loading;
 
   void deleteProduct(Product product) {
-    _allProducts.removeWhere((element) => element.code == product.code);
-    notifyListeners();
+    productsJson.removeWhere((element) => element['code'] == product.code);
+    notifyProductsChanged();
   }
 
   void search(String query) {
@@ -77,11 +87,7 @@ class Productcontrollers extends ChangeNotifier {
   }
 
   Future<void> updateProduct(Product product) async {
-    Product findedProduct = _allProducts
-        .where((element) => element.code == product.code)
-        .first;
-    _allProducts[_allProducts.indexOf(findedProduct)] = product;
-    notifyListeners();
+    await MockProductsRepository.instance.save(product.toJson());
   }
 
   Future<void> getproducts() async {

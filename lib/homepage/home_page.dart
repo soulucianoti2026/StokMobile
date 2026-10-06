@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:stokmobile/profilePage/profile_edit_page.dart';
+import 'package:stokmobile/profilePage/profile_avatar.dart';
 import 'package:provider/provider.dart';
-import 'package:stokmobile/loginpage/login_controller.dart';
+import 'package:stokmobile/loginpage/controllers/login_controller.dart';
 import 'package:stokmobile/productmodel/products_model.dart';
-import 'package:stokmobile/shared/mocks/mock_product.dart';
+import 'package:stokmobile/homepage/controllers/homepage_controller.dart';
 import 'package:stokmobile/shared/Widget/custom_bottom_nav_bar.dart';
 
-const int kEstoqueMinimoPadrao = 10;
+const int kEstoqueMinimoPadrao = HomepageController.minimumStock;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,38 +19,33 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _controller = HomepageController();
+
   @override
   void initState() {
     super.initState();
+    _controller.addListener(_refreshProducts);
   }
 
-  // Converte o productsJson (List<Map>) pra List<Product> usando o factory
-  // que já existe no model. Considera só produtos ativos, já que agora
-  // temos esse campo.
-  List<Product> get _products => productsJson
-      .map((json) => Product.fromJson(json))
-      .where((p) => p.isActive)
-      .toList();
+  void _refreshProducts() => setState(() {});
 
-  int get _totalProdutos => _products.length;
-
-  double get _valorEstoque =>
-      _products.fold<double>(0, (soma, p) => soma + p.stock * p.price);
-
-  List<Product> get _produtosComEstoqueBaixo {
-    final baixo = _products
-        .where((p) => p.stock < kEstoqueMinimoPadrao)
-        .toList();
-    baixo.sort((a, b) => a.stock.compareTo(b.stock));
-    return baixo;
+  @override
+  void dispose() {
+    _controller.removeListener(_refreshProducts);
+    _controller.dispose();
+    super.dispose();
   }
 
-  // O User/mock só tem email e senha, sem campo de nome. Até existir um
-  // campo de nome de verdade, derivo um nome de exibição a partir da parte
-  // antes do @ do email (ex: 'bruno@gmail.com' -> 'Bruno').
+  int get _totalProdutos => _controller.totalProducts;
+  double get _valorEstoque => _controller.stockValue;
+  List<Product> get _produtosComEstoqueBaixo => _controller.stockAlerts;
+
   String _nomeExibicao(BuildContext context) {
     final user = context.watch<LoginController>().user;
     if (user == null || user.email.isEmpty) return 'Usuário';
+    if (user.nome.trim().isNotEmpty) {
+      return user.nome.trim().split(RegExp(r'\s+')).first;
+    }
 
     final parteAntesDoArroba = user.email.split('@').first;
     if (parteAntesDoArroba.isEmpty) return 'Usuário';
@@ -72,8 +69,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       backgroundColor: const Color(0xFFF5F6F8),
       body: SafeArea(
@@ -81,11 +76,13 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
           children: [
             _buildProfileHeader(context),
-            const SizedBox(height: 20),
+            const SizedBox(height: 8),
             _buildStatGrid(),
             const SizedBox(height: 24),
             _buildAlertsHeader(),
             const SizedBox(height: 12),
+            if (_produtosComEstoqueBaixo.isEmpty)
+              const Text('Nenhum produto com estoque baixo.'),
             ..._produtosComEstoqueBaixo.map(_buildAlertCard),
           ],
         ),
@@ -96,80 +93,108 @@ class _HomePageState extends State<HomePage> {
 
   // ---------- Header com avatar e saudação ----------
   Widget _buildProfileHeader(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 64,
-          height: 64,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [Color(0xFFD9DCE2), Color(0xFFC4C8D0)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+    final user = context.watch<LoginController>().user;
+    return Padding(
+      padding: const EdgeInsets.all(4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ProfileAvatar(photo: user?.foto ?? ''),
+          const SizedBox(height: 2),
+          Text(
+            'Olá, ${_nomeExibicao(context)}',
+            style: const TextStyle(
+              fontSize: 20,
+              fontFamily: 'Inter',
+              color: Color(0xFF0F172A),
+              fontWeight: FontWeight.bold,
+              letterSpacing: -0.2,
             ),
           ),
-        ),
-        const SizedBox(height: 14),
-        Text(
-          'Olá, ${_nomeExibicao(context)}',
-          style: const TextStyle(
-            fontSize: 21,
-            fontWeight: FontWeight.bold,
-            letterSpacing: -0.2,
+          const SizedBox(height: 2),
+          Text(
+            'Painel de controle geral',
+            style: const TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 13,
+              color: Color(0xFF475569),
+            ),
           ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          'Painel de controle geral',
-          style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-        ),
-      ],
+          const SizedBox(height: 2),
+          TextButton(
+            onPressed: user == null
+                ? null
+                : () => Navigator.pushNamed(context, ProfileEditPage.route),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              minimumSize: Size.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              foregroundColor: const Color(0xFF0D9488),
+            ),
+            child: const Text(
+              'editar perfil',
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildStatGrid() {
-    return GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      mainAxisSpacing: 12,
-      crossAxisSpacing: 12,
-      childAspectRatio: 1.35,
-      children: [
-        _StatCard(
-          icon: Icons.inventory_2_outlined,
-          iconColor: const Color(0xFF3D6BFF),
-          iconBg: const Color(0xFFE8EDFF),
-          value: '$_totalProdutos',
-          label: 'Total de Produtos',
-        ),
-        _StatCard(
-          icon: Icons.attach_money,
-          iconColor: const Color(0xFF3D6BFF),
-          iconBg: const Color(0xFFE8EDFF),
-          value: _formatBRL(_valorEstoque),
-          label: 'Valor do Estoque',
-        ),
-        // Entradas/Saídas, ainda não temos histórico de movimentação.
-        _StatCard(
-          icon: Icons.arrow_downward,
-          iconColor: const Color(0xFF1DBE6B),
-          iconBg: const Color(0xFFE4F8ED),
-          value: '—',
-          valueColor: const Color(0xFF1DBE6B),
-          label: 'Entradas Hoje',
-        ),
-        _StatCard(
-          icon: Icons.arrow_upward,
-          iconColor: const Color(0xFFFF4D4D),
-          iconBg: const Color(0xFFFFE9E9),
-          value: '—',
-          valueColor: const Color(0xFFFF4D4D),
-          label: 'Saídas Hoje',
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          children:
+              [
+                    _StatCard(
+                      icon: Icons.inventory_2_outlined,
+                      iconColor: const Color(0xFF3D6BFF),
+                      iconBg: const Color(0xFFE8EDFF),
+                      value: '$_totalProdutos',
+                      label: 'Total de Produtos',
+                    ),
+                    _StatCard(
+                      icon: Icons.attach_money,
+                      iconColor: const Color(0xFF3D6BFF),
+                      iconBg: const Color(0xFFE8EDFF),
+                      value: _formatBRL(_valorEstoque),
+                      label: 'Valor do Estoque',
+                    ),
+                    // Entradas/Saídas, ainda não temos histórico de movimentação.
+                    _StatCard(
+                      icon: Icons.arrow_downward,
+                      iconColor: const Color(0xFF1DBE6B),
+                      iconBg: const Color(0xFFE4F8ED),
+                      value: '—',
+                      valueColor: const Color(0xFF1DBE6B),
+                      label: 'Entradas Hoje',
+                    ),
+                    _StatCard(
+                      icon: Icons.arrow_upward,
+                      iconColor: const Color(0xFFFF4D4D),
+                      iconBg: const Color(0xFFFFE9E9),
+                      value: '—',
+                      valueColor: const Color(0xFFFF4D4D),
+                      label: 'Saídas Hoje',
+                    ),
+                  ]
+                  .map(
+                    (card) => SizedBox(
+                      width: (constraints.maxWidth - 12) / 2,
+                      child: card,
+                    ),
+                  )
+                  .toList(),
+        );
+      },
     );
   }
 
@@ -179,10 +204,13 @@ class _HomePageState extends State<HomePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
-          'Alertas de Estoque Baixo',
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+        const Expanded(
+          child: Text(
+            'Alertas de Estoque Baixo',
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+          ),
         ),
+        const SizedBox(width: 8),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
@@ -206,7 +234,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildAlertCard(Product p) {
     final int estoqueAtual = p.stock;
     final String nome = p.name;
-    final ratio = estoqueAtual / kEstoqueMinimoPadrao;
+    final ratio = p.minimumStock > 0 ? estoqueAtual / p.minimumStock : 0.0;
     final bool critico = ratio <= 0.3;
     final Color iconBg = critico
         ? const Color(0xFFFFE9E9)
@@ -262,7 +290,7 @@ class _HomePageState extends State<HomePage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      TextSpan(text: ' unidades (Mín: $kEstoqueMinimoPadrao)'),
+                      TextSpan(text: ' unidades (Mín: ${p.minimumStock})'),
                     ],
                   ),
                 ),
@@ -315,7 +343,7 @@ class _StatCard extends StatelessWidget {
             ),
             child: Icon(icon, size: 18, color: iconColor),
           ),
-          const Spacer(),
+          const SizedBox(height: 12),
           Text(
             value,
             style: TextStyle(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stokmobile/loginpage/page/login_page.dart';
 
 class LostpasswordController extends ChangeNotifier {
   LostpasswordController({this.sendInstructions});
@@ -63,7 +64,15 @@ class LostpasswordController extends ChangeNotifier {
   }
 
   void backToLogin(BuildContext context) {
-    Navigator.of(context).pushNamedAndRemoveUntil('/', (_) => false);
+    final navigator = Navigator.of(context);
+    var foundLogin = false;
+    navigator.popUntil((route) {
+      foundLogin = route.settings.name == LoginPage.route;
+      return foundLogin || route.isFirst;
+    });
+    if (!foundLogin) {
+      navigator.pushReplacementNamed(LoginPage.route);
+    }
   }
 
   @override

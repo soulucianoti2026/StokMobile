@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stokmobile/NewProductPage/Page/new_product_page.dart';
 import 'package:stokmobile/productPage/controllers/product_controllers.dart';
 import 'package:stokmobile/shared/Widget/button_new_product.dart';
 import 'package:stokmobile/shared/Widget/button_search.dart';
@@ -17,7 +16,7 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  int _selectedIndex = 1;
+  final int _selectedIndex = 1;
 
   @override
   void initState() {
@@ -33,36 +32,39 @@ class _ProductPageState extends State<ProductPage> {
       floatingActionButton: ButtonNewProduct(),
       appBar: AppBar(title: const Text('Produtos'), shadowColor: Colors.white),
 
-      body: Container(
-        color: Colors.grey.shade200,
-        child: Consumer<Productcontrollers>(
-          builder: (context, productCrontroller, child) => Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ButtonSearch(
-                onChanged: (valor) {
-                  productCrontroller.search(valor);
-                },
-              ),
-
-              ListViewHorizontal(
-                categoria: productCrontroller.categoria,
-                selectedIndex: productCrontroller.selectedIndex,
-                changeSelectedIndex: productCrontroller.changeSelectedIndex,
-              ),
-
-              if (productCrontroller.productsState == ProductsViewState.loading)
-                const Expanded(
-                  child: Center(child: CircularProgressIndicator()),
-                )
-              else
-                products_section(
-                  hasError:
-                      productCrontroller.productsState ==
-                      ProductsViewState.erros,
-                  products: productCrontroller.products,
+      body: SafeArea(
+        child: Container(
+          color: Colors.grey.shade200,
+          child: Consumer<Productcontrollers>(
+            builder: (context, productCrontroller, child) => Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ButtonSearch(
+                  onChanged: (valor) {
+                    productCrontroller.search(valor);
+                  },
                 ),
-            ],
+
+                ListViewHorizontal(
+                  categoria: productCrontroller.categoria,
+                  selectedIndex: productCrontroller.selectedIndex,
+                  changeSelectedIndex: productCrontroller.changeSelectedIndex,
+                ),
+
+                if (productCrontroller.productsState ==
+                    ProductsViewState.loading)
+                  const Expanded(
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                else
+                  ProductsSection(
+                    hasError:
+                        productCrontroller.productsState ==
+                        ProductsViewState.erros,
+                    products: productCrontroller.products,
+                  ),
+              ],
+            ),
           ),
         ),
       ),

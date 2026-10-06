@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stokmobile/productHistory/page/productHistory.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stokmobile/shared/app_colors.dart';
 import 'package:stokmobile/homepage/home_page.dart';
@@ -28,10 +29,7 @@ class CustomBottomNavBar extends StatelessWidget {
       } else if (index == 2) {
         Navigator.pushReplacementNamed(context, ProductMovPage.route);
       } else {
-        // Histórico ainda está em desenvolvimento
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Histórico em breve')));
+        Navigator.pushReplacementNamed(context, ProductHistoryPage.route);
       }
     }
 
@@ -70,7 +68,7 @@ class CustomBottomNavBar extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: SvgPicture.asset(
-                                'assets/images/movement/${names[index]}.svg',
+                                'assets/images/${currentIndex == 3 ? 'history' : 'movement'}/${names[index]}.svg',
                                 width: 20,
                                 height: 20,
                                 excludeFromSemantics: true,

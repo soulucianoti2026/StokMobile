@@ -9,6 +9,24 @@ class LoginController extends ChangeNotifier {
 
   User? user;
 
+  void updateProfile(UsersMock profile) {
+    user = User(
+      email: profile.email,
+      senha: profile.senha,
+      nome: profile.nome,
+      documento: profile.documento,
+      foto: profile.foto,
+    );
+    notifyListeners();
+  }
+
+  void logout() {
+    user = null;
+    emailController.clear();
+    senhaController.clear();
+    notifyListeners();
+  }
+
   TextEditingController emailController = TextEditingController();
   TextEditingController senhaController = TextEditingController();
 
@@ -50,6 +68,13 @@ class LoginController extends ChangeNotifier {
   }
 
   Future<void> login() async {
+    try {
+      await MockUsersRepository.instance.load();
+    } catch (_) {
+      throw AuthException(
+        'Não foi possível carregar os usuários salvos. Tente novamente.',
+      );
+    }
     // simula o delay de uma chamada de API
     await Future.delayed(const Duration(seconds: 2));
 
@@ -58,7 +83,13 @@ class LoginController extends ChangeNotifier {
 
     for (final searchUser in usuariosMock) {
       if (searchUser.email == email && searchUser.senha == senha) {
-        user = User(email: searchUser.email, senha: searchUser.senha);
+        user = User(
+          email: searchUser.email,
+          senha: searchUser.senha,
+          nome: searchUser.nome,
+          documento: searchUser.documento,
+          foto: searchUser.foto,
+        );
         return;
       }
     }

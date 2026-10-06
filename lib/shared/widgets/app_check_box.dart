@@ -30,7 +30,12 @@ class AppCheckBox extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        Text(label, style: TextStyle(fontSize: 13, color: AppColors.slate600)),
+        Expanded(
+          child: Text(
+            label,
+            style: TextStyle(fontSize: 13, color: AppColors.slate600),
+          ),
+        ),
       ],
     );
   }
