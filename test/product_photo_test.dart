@@ -82,6 +82,10 @@ void main() {
       await tester.pumpAndSettle();
       expect(picker.lastSource, ImageSource.camera);
       expect(photo, 'data:image/jpeg;base64,$pixel');
+      await tester.tap(find.text('Escolher da galeria'));
+      await tester.pumpAndSettle();
+      expect(picker.lastSource, ImageSource.gallery);
+      expect(photo, 'data:image/jpeg;base64,$pixel');
       picker.selected = null;
       await tester.tap(find.text('Alterar foto'));
       await tester.pumpAndSettle();

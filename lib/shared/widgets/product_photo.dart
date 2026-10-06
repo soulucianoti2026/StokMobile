@@ -57,11 +57,11 @@ class ProductPhotoPicker extends StatefulWidget {
 class _ProductPhotoPickerState extends State<ProductPhotoPicker> {
   bool _busy = false;
 
-  Future<void> _capture() async {
+  Future<void> _capture([ImageSource source = ImageSource.camera]) async {
     setState(() => _busy = true);
     try {
       final file = await (widget.imagePicker ?? ImagePicker()).pickImage(
-        source: ImageSource.camera,
+        source: source,
         maxWidth: 1024,
         maxHeight: 1024,
         imageQuality: 75,
@@ -78,7 +78,7 @@ class _ProductPhotoPickerState extends State<ProductPhotoPicker> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-              'Não foi possível tirar a foto. Verifique a permissão da câmera e tente novamente.',
+              'Não foi possível carregar a foto. Verifique a permissão da câmera ou galeria e tente novamente.',
             ),
           ),
         );
@@ -94,16 +94,29 @@ class _ProductPhotoPickerState extends State<ProductPhotoPicker> {
       ProductPhoto(photo: widget.photo),
       const SizedBox(width: 12),
       Flexible(
-        child: TextButton.icon(
-          onPressed: widget.enabled && !_busy ? _capture : null,
-          icon: const Icon(Icons.camera_alt_outlined),
-          label: Text(
-            _busy
-                ? 'Abrindo câmera...'
-                : widget.photo.isEmpty
-                ? 'Tirar foto'
-                : 'Alterar foto',
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextButton.icon(
+              onPressed: widget.enabled && !_busy ? _capture : null,
+              icon: const Icon(Icons.camera_alt_outlined),
+              label: Text(
+                _busy
+                    ? 'Carregando foto...'
+                    : widget.photo.isEmpty
+                    ? 'Tirar foto'
+                    : 'Alterar foto',
+              ),
+            ),
+            TextButton.icon(
+              onPressed: widget.enabled && !_busy
+                  ? () => _capture(ImageSource.gallery)
+                  : null,
+              icon: const Icon(Icons.photo_library_outlined),
+              label: const Text('Escolher da galeria'),
+            ),
+          ],
         ),
       ),
     ],

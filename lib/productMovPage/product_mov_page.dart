@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stokmobile/productMovPage/controllers/productMovePage_controller.dart';
 import 'package:stokmobile/shared/app_colors.dart';
-import 'package:stokmobile/shared/wigdets/app_elevated_button.dart';
-import 'package:stokmobile/shared/Widget/custom_bottom_nav_bar.dart';
+import 'package:stokmobile/shared/widgets/app_elevated_button.dart';
+import 'package:stokmobile/shared/widgets/custom_bottom_nav_bar.dart';
 
 class ProductMovPage extends StatefulWidget {
   const ProductMovPage({super.key});
@@ -429,10 +429,7 @@ class _ProductMovPageState extends State<ProductMovPage> {
             },
           ),
         ),
-        bottomNavigationBar: const CustomBottomNavBar(
-          currentIndex: 2,
-          figmaStyle: true,
-        ),
+        bottomNavigationBar: const CustomBottomNavBar(currentIndex: 2),
       ),
     );
   }

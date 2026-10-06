@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stokmobile/productHistory/controllers/controller.dart';
-import 'package:stokmobile/shared/Widget/custom_bottom_nav_bar.dart';
+import 'package:stokmobile/shared/widgets/custom_bottom_nav_bar.dart';
 import 'package:stokmobile/shared/app_colors.dart';
 
 class ProductHistoryPage extends StatefulWidget {
@@ -162,10 +162,7 @@ class _ProductHistoryPageState extends State<ProductHistoryPage> {
     ),
     child: Scaffold(
       backgroundColor: AppColors.slate50,
-      bottomNavigationBar: const CustomBottomNavBar(
-        currentIndex: 3,
-        figmaStyle: true,
-      ),
+      bottomNavigationBar: const CustomBottomNavBar(currentIndex: 3),
       body: SafeArea(
         bottom: false,
         child: ListenableBuilder(

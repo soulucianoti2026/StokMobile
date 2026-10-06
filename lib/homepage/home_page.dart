@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:stokmobile/loginpage/controllers/login_controller.dart';
 import 'package:stokmobile/productmodel/products_model.dart';
 import 'package:stokmobile/homepage/controllers/homepage_controller.dart';
-import 'package:stokmobile/shared/Widget/custom_bottom_nav_bar.dart';
+import 'package:stokmobile/shared/widgets/custom_bottom_nav_bar.dart';
 
 const int kEstoqueMinimoPadrao = HomepageController.minimumStock;
 
@@ -168,12 +168,11 @@ class _HomePageState extends State<HomePage> {
                       value: _formatBRL(_valorEstoque),
                       label: 'Valor do Estoque',
                     ),
-                    // Entradas/Saídas, ainda não temos histórico de movimentação.
                     _StatCard(
                       icon: Icons.arrow_downward,
                       iconColor: const Color(0xFF1DBE6B),
                       iconBg: const Color(0xFFE4F8ED),
-                      value: '—',
+                      value: '${_controller.entriesToday}',
                       valueColor: const Color(0xFF1DBE6B),
                       label: 'Entradas Hoje',
                     ),
@@ -181,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                       icon: Icons.arrow_upward,
                       iconColor: const Color(0xFFFF4D4D),
                       iconBg: const Color(0xFFFFE9E9),
-                      value: '—',
+                      value: '${_controller.exitsToday}',
                       valueColor: const Color(0xFFFF4D4D),
                       label: 'Saídas Hoje',
                     ),
@@ -297,7 +296,6 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Icon(Icons.chevron_right, color: Colors.grey.shade400),
         ],
       ),
     );
